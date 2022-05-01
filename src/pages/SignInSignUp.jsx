@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {
     useAuthState,
     useSignInWithEmailAndPassword,
+    useSignInWithGoogle,
 } from 'react-firebase-hooks/auth';
 import { firebaseAuth } from '../firebase/firebase.init';
 import { Waveform } from '@uiball/loaders';
@@ -15,6 +16,8 @@ const SignInSignUp = ({ register }) => {
     const [user] = useAuthState(firebaseAuth);
     const [signInWithEmailAndPassword, , signInloading, signInError] =
         useSignInWithEmailAndPassword(firebaseAuth);
+    const [signInWithGoogle, , googleLoginLoading, googleLoginError] =
+        useSignInWithGoogle(firebaseAuth);
     const pageConfig = {
         register: {
             title: 'Sign up for an account',
@@ -53,9 +56,14 @@ const SignInSignUp = ({ register }) => {
         let errorMsg = '';
         if (!register && signInError) {
             errorMsg = 'Invalid email or password';
+        } else if (!register && googleLoginError) {
+            errorMsg = 'Google login failed';
         }
 
-        if (errorMsg && signInError && Object.keys(signInError).length) {
+        if (
+            (errorMsg && signInError && Object.keys(signInError).length) ||
+            (googleLoginError && Object.keys(googleLoginError).length)
+        ) {
             toast.error(errorMsg, {
                 position: 'bottom-right',
                 autoClose: 3000,
@@ -66,7 +74,7 @@ const SignInSignUp = ({ register }) => {
                 progress: undefined,
             });
         }
-    }, [signInError]);
+    }, [signInError, googleLoginError]);
 
     return (
         <>
@@ -91,7 +99,12 @@ const SignInSignUp = ({ register }) => {
 
                                     <div className="mt-1 grid grid-cols-1 gap-3">
                                         <div>
-                                            <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                            <button
+                                                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                                                onClick={() =>
+                                                    signInWithGoogle()
+                                                }
+                                            >
                                                 <span className="sr-only">
                                                     Sign in with Google
                                                 </span>
@@ -252,7 +265,7 @@ const SignInSignUp = ({ register }) => {
                         alt="Yamaha"
                     />
                 </div>
-                {signInloading && (
+                {(signInloading || googleLoginLoading) && (
                     <div className="absolute inset-0 bg-gray-700 opacity-70 flex justify-center items-center">
                         <Waveform
                             size={40}
