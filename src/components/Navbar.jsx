@@ -12,6 +12,10 @@ const Navbar = () => {
             name: 'Blog',
             path: '/blog',
         },
+        {
+            name: 'Login',
+            path: '/login',
+        },
     ];
 
     return (
