@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ProductCard = ({
     id,
@@ -34,9 +35,12 @@ const ProductCard = ({
                     </div>
                 </div>
             </div>
-            <button className="w-full flex justify-center text-sm font-semibold p-3 border-0 rounded-b outline-none bg-gray-200 group-hover:bg-gray-300 transition-all duration-200 ease-in-out">
+            <Link
+                to={`/inventory/${id}`}
+                className="w-full flex justify-center text-sm font-semibold p-3 border-0 rounded-b outline-none bg-gray-200 group-hover:bg-gray-300 transition-all duration-200 ease-in-out"
+            >
                 Update
-            </button>
+            </Link>
         </div>
     );
 };
