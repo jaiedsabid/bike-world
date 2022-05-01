@@ -3,8 +3,8 @@ import React from 'react';
 const Hero = () => {
     return (
         <div className="relative bg-white overflow-hidden">
-            <div className="max-w-7xl mx-auto">
-                <div className="relative z-[1] py-4 bg-white sm:py-8 md:py-10 lg:max-w-2xl lg:w-full lg:py-14 xl:py-16">
+            <div className="max-w-7xl mx-auto lg:h-screen">
+                <div className="relative z-[1] py-4 bg-white sm:py-8 md:py-10 lg:max-w-2xl lg:w-full lg:py-14 xl:py-16 lg:h-full lg:flex lg:flex-col lg:justify-center">
                     <svg
                         className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2"
                         fill="currentColor"
