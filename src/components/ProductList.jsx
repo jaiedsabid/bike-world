@@ -1,7 +1,7 @@
 import { classNames } from '../utils/helpers';
 import ProductCard from './ProductCard';
 
-const ProductList = ({ title, limit, className }) => {
+const ProductList = ({ title, limit, className, ...props }) => {
     const products = [
         {
             id: 1,
@@ -72,7 +72,7 @@ const ProductList = ({ title, limit, className }) => {
     ];
 
     return (
-        <div className={classNames('bg-white', className)}>
+        <div className={classNames('bg-white', className)} {...props}>
             <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
                 {title && (
                     <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl md:text-center font-bold text-gray-900">

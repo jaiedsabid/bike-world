@@ -57,7 +57,7 @@ const Home = () => {
                 </div>
             </div>
             {/* Product Listing */}
-            <ProductList title="Available Products" limit={6} />
+            <ProductList id="products" title="Available Products" limit={6} />
             {/* Contacts section */}
             <div className="relative bg-white">
                 <div className="absolute inset-0">
