@@ -1,6 +1,7 @@
 import Hero from '../components/Hero';
 import { MailIcon, PhoneIcon } from '@heroicons/react/outline';
 import { Link } from 'react-router-dom';
+import ProductList from '../components/ProductList';
 
 const Home = () => {
     return (
@@ -55,6 +56,8 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            {/* Product Listing */}
+            <ProductList title="Available Products" limit={6} />
             {/* Contacts section */}
             <div className="relative bg-white">
                 <div className="absolute inset-0">
