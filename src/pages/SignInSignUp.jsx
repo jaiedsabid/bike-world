@@ -1,6 +1,20 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import {
+    useAuthState,
+    useSignInWithEmailAndPassword,
+} from 'react-firebase-hooks/auth';
+import { firebaseAuth } from '../firebase/firebase.init';
+import { Waveform } from '@uiball/loaders';
+import { ToastContainer, toast } from 'react-toastify';
+
+// External CSS
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignInSignUp = ({ register }) => {
+    const [user] = useAuthState(firebaseAuth);
+    const [signInWithEmailAndPassword, , signInloading, signInError] =
+        useSignInWithEmailAndPassword(firebaseAuth);
     const pageConfig = {
         register: {
             title: 'Sign up for an account',
@@ -14,9 +28,49 @@ const SignInSignUp = ({ register }) => {
         },
     };
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const {
+            target: {
+                email: { value: email },
+                password: { value: password },
+            },
+        } = event;
+
+        if (register) {
+            const {
+                target: {
+                    fullName: { value: fullName },
+                },
+            } = event;
+            console.log(fullName);
+        } else {
+            await signInWithEmailAndPassword(email, password);
+        }
+    };
+
+    useEffect(() => {
+        let errorMsg = '';
+        if (!register && signInError) {
+            errorMsg = 'Invalid email or password';
+        }
+
+        if (errorMsg && signInError && Object.keys(signInError).length) {
+            toast.error(errorMsg, {
+                position: 'bottom-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    }, [signInError]);
+
     return (
         <>
-            <div className="min-h-full flex">
+            <div className="min-h-full flex relative">
                 <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                     <div className="mx-auto w-full max-w-sm lg:w-96">
                         <div>
@@ -74,9 +128,8 @@ const SignInSignUp = ({ register }) => {
 
                             <div className="mt-6">
                                 <form
-                                    action="#"
-                                    method="POST"
                                     className="space-y-6"
+                                    onSubmit={handleSubmit}
                                 >
                                     {register && (
                                         <div>
@@ -199,7 +252,28 @@ const SignInSignUp = ({ register }) => {
                         alt="Yamaha"
                     />
                 </div>
+                {signInloading && (
+                    <div className="absolute inset-0 bg-gray-700 opacity-70 flex justify-center items-center">
+                        <Waveform
+                            size={40}
+                            lineWeight={3.5}
+                            speed={1}
+                            color="white"
+                        />
+                    </div>
+                )}
             </div>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     );
 };
