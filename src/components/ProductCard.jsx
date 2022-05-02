@@ -28,7 +28,7 @@ const ProductCard = ({
                     <p className="text-sm italic text-gray-500">{supplier}</p>
                     <div className="flex justify-between">
                         <p className="text-base font-medium text-gray-900">
-                            {price}
+                            ${price}
                         </p>
                         <p className="text-gray-500 text-sm font-medium">
                             <span className="inline-block">Quantity:</span>{' '}

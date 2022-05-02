@@ -2,7 +2,7 @@ export const PRODUCTS = [
     {
         id: 1,
         name: 'Yamaha R15 V3 Dual ABS',
-        price: '$6250',
+        price: '6250',
         description:
             'One of the best Yamaha R15 V3 bikes in the world. It has a very good suspension and a very good handling.',
         supplier: 'Yamaha',
@@ -13,7 +13,7 @@ export const PRODUCTS = [
     {
         id: 2,
         name: 'Yamaha MT-15',
-        price: '$3900',
+        price: '3900',
         description:
             'One of the best Yamaha MT-15 bikes in the world. It has a very good suspension and a very good handling.',
         supplier: 'Yamaha',
@@ -24,7 +24,7 @@ export const PRODUCTS = [
     {
         id: 3,
         name: 'Yamaha FZS-FI V 3.0',
-        price: '$2857',
+        price: '2857',
         description:
             'One of the best Yamaha FZS-FI V 3.0 bikes in the world. It has a very good suspension and a very good handling.',
         supplier: 'Yamaha',
@@ -35,7 +35,7 @@ export const PRODUCTS = [
     {
         id: 4,
         name: 'Yamaha Fazer FI',
-        price: '$3214',
+        price: '3214',
         description:
             'One of the best Yamaha Fazer FI bikes in the world. It has a very good suspension and a very good handling.',
         supplier: 'Yamaha',
@@ -46,7 +46,7 @@ export const PRODUCTS = [
     {
         id: 5,
         name: 'Yamaha FZS FI Double Disc',
-        price: '$2,500',
+        price: '2,500',
         description:
             'One of the best Yamaha FZS FI Double Disc bikes in the world. It has a very good suspension and a very good handling.',
         supplier: 'Yamaha',
@@ -57,7 +57,7 @@ export const PRODUCTS = [
     {
         id: 6,
         name: 'Yamaha Saluto 125',
-        price: '$1900',
+        price: '1900',
         description:
             'One of the best Yamaha Saluto 125 bikes in the world. It has a very good suspension and a very good handling.',
         supplier: 'Yamaha',

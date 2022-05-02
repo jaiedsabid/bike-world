@@ -90,7 +90,7 @@ const InventoryItem = () => {
                                     </span>
                                 </h1>
                                 <p className="text-xl font-medium text-gray-900">
-                                    {product.price}
+                                    ${product.price}
                                 </p>
                             </div>
                             <div className="mt-5 flex items-center gap-3">
