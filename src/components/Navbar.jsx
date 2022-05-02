@@ -1,8 +1,11 @@
 import { Disclosure } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { NavLink } from 'react-router-dom';
+import { firebaseAuth } from '../firebase/firebase.init';
 
 const Navbar = () => {
+    const [user] = useAuthState(firebaseAuth);
     const navLinks = [
         {
             name: 'Home',
@@ -13,8 +16,8 @@ const Navbar = () => {
             path: '/blog',
         },
         {
-            name: 'Login',
-            path: '/login',
+            name: !user ? 'Login' : 'Logout',
+            path: !user ? '/login' : '/logout',
         },
     ];
 

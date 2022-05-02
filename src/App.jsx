@@ -5,6 +5,7 @@ import PageLayout from './components/PageLayout';
 import Home from './pages/Home';
 import NotFound404 from './pages/NotFound404';
 import SignInSignUp from './pages/SignInSignUp';
+import SignOut from './pages/SignOut';
 
 const App = () => {
     return (
@@ -25,6 +26,7 @@ const App = () => {
                     path="/register"
                     element={<SignInSignUp register />}
                 />
+                <Route path="/logout" element={<SignOut />} />
                 <Route path="/404" element={<NotFound404 />} />
                 <Route path="*" element={<NotFoundRedirect />} />
             </Routes>
