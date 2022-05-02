@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     useAuthState,
     useCreateUserWithEmailAndPassword,
@@ -15,6 +15,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SignInSignUp = ({ register }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const fromURL = location.state ? location.state.from : '/';
     const [user] = useAuthState(firebaseAuth);
     const [signInWithEmailAndPassword, , signInloading, signInError] =
         useSignInWithEmailAndPassword(firebaseAuth);
@@ -104,6 +107,12 @@ const SignInSignUp = ({ register }) => {
             });
         }
     }, [signInError, googleLoginError, createAccountLError]);
+
+    useEffect(() => {
+        if (user) {
+            navigate(fromURL, { replace: true });
+        }
+    }, [user]);
 
     return (
         <>
