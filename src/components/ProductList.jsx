@@ -74,7 +74,7 @@ const ProductList = ({
                 )}
 
                 {addNewItemBtn && (
-                    <div className="py-4 w-full flex justify-end">
+                    <div className="pb-4 w-full flex justify-end">
                         <Button
                             variant="primary"
                             onClick={() => setOpenSlideOver(true)}
