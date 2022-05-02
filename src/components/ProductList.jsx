@@ -7,10 +7,13 @@ import withReactContent from 'sweetalert2-react-content';
 import { classNames } from '../utils/helpers';
 import ProductCard from './ProductCard';
 import Button from './Button';
+import AddItemForm from './AddItemForm';
+import { ToastContainer, toast } from 'react-toastify';
 import { PRODUCTS } from '../data/dummyData';
 
 // External CSS
 import 'sweetalert2/dist/sweetalert2.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductList = ({
     title,
@@ -22,6 +25,7 @@ const ProductList = ({
     ...props
 }) => {
     const [products, setProducts] = useState([]);
+    const [openSlideOver, setOpenSlideOver] = useState(false);
     const Modal = withReactContent(Swal);
 
     useEffect(() => {
@@ -45,6 +49,21 @@ const ProductList = ({
         });
     };
 
+    const handleAddItem = (product) => {
+        setProducts([...products, product]);
+        setOpenSlideOver(false);
+
+        toast.success('Item added successfully', {
+            position: 'bottom-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    };
+
     return (
         <div className={classNames('bg-white', className)} {...props}>
             <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -56,7 +75,10 @@ const ProductList = ({
 
                 {addNewItemBtn && (
                     <div className="py-4 w-full flex justify-end">
-                        <Button variant="primary">
+                        <Button
+                            variant="primary"
+                            onClick={() => setOpenSlideOver(true)}
+                        >
                             Add New Item <PlusSmIcon className="w-6 h-6 ml-1" />
                         </Button>
                     </div>
@@ -93,6 +115,22 @@ const ProductList = ({
                     </div>
                 )}
             </div>
+            <AddItemForm
+                open={openSlideOver}
+                setOpen={setOpenSlideOver}
+                addItemCallback={handleAddItem}
+            />
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </div>
     );
 };
