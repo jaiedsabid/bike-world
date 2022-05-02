@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { withProtectedRoute } from '../utils/withHOCs';
 import Button from '../components/Button';
@@ -9,6 +9,7 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 const InventoryItem = () => {
     const { id } = useParams();
     const [product, setProduct] = useState({});
+    const restockInput = useRef();
     const breadcrumb = [
         {
             name: 'Home',
@@ -29,6 +30,16 @@ const InventoryItem = () => {
             ...product,
             quantity: product.quantity > 0 ? product.quantity - 1 : 0,
         });
+    };
+
+    const handleRestock = () => {
+        setProduct({
+            ...product,
+            quantity: product.quantity + parseInt(restockInput.current.value),
+        });
+
+        // Reset the input value.
+        restockInput.current.value = '';
     };
 
     return (
@@ -149,6 +160,31 @@ const InventoryItem = () => {
                                     __html: product.description,
                                 }}
                             />
+                        </div>
+                        {/* Restock Form */}
+                        <div className="mt-5 lg:col-span-5">
+                            <h2 className="font-semibold text-sm">
+                                Restock Item
+                            </h2>
+                            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 items-center gap-2">
+                                <div className="md:col-span-2">
+                                    <label
+                                        className="sr-only"
+                                        htmlFor="restockCount"
+                                    >
+                                        Quantity
+                                    </label>
+                                    <input
+                                        ref={restockInput}
+                                        type="number"
+                                        name="restockCount"
+                                        id="restockCount"
+                                        className="w-full inline-block shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                                        placeholder="Enter quantity"
+                                    />
+                                </div>
+                                <Button onClick={handleRestock}>Update</Button>
+                            </div>
                         </div>
                     </div>
                 </div>
