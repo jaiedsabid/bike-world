@@ -57,7 +57,12 @@ const Home = () => {
                 </div>
             </div>
             {/* Product Listing */}
-            <ProductList id="products" title="Available Products" limit={6} />
+            <ProductList
+                id="products"
+                title="Available Products"
+                limit={6}
+                manageInventoryBtn
+            />
             {/* Contacts section */}
             <div className="relative bg-white">
                 <div className="absolute inset-0">
