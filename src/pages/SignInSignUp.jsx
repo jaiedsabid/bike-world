@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
     useAuthState,
+    useCreateUserWithEmailAndPassword,
     useSignInWithEmailAndPassword,
     useSignInWithGoogle,
+    useUpdateProfile,
 } from 'react-firebase-hooks/auth';
 import { firebaseAuth } from '../firebase/firebase.init';
 import { Waveform } from '@uiball/loaders';
@@ -18,6 +20,15 @@ const SignInSignUp = ({ register }) => {
         useSignInWithEmailAndPassword(firebaseAuth);
     const [signInWithGoogle, , googleLoginLoading, googleLoginError] =
         useSignInWithGoogle(firebaseAuth);
+    const [
+        createUserWithEmailAndPassword,
+        ,
+        createAccountLoading,
+        createAccountLError,
+    ] = useCreateUserWithEmailAndPassword(firebaseAuth, {
+        sendEmailVerification: true,
+    });
+    const [updateProfile, updating] = useUpdateProfile(firebaseAuth);
     const pageConfig = {
         register: {
             title: 'Sign up for an account',
@@ -46,7 +57,9 @@ const SignInSignUp = ({ register }) => {
                     fullName: { value: fullName },
                 },
             } = event;
-            console.log(fullName);
+
+            await createUserWithEmailAndPassword(email, password);
+            await updateProfile({ displayName: fullName });
         } else {
             await signInWithEmailAndPassword(email, password);
         }
@@ -54,15 +67,31 @@ const SignInSignUp = ({ register }) => {
 
     useEffect(() => {
         let errorMsg = '';
+
         if (!register && signInError) {
             errorMsg = 'Invalid email or password';
         } else if (!register && googleLoginError) {
             errorMsg = 'Google login failed';
+        } else if (
+            register &&
+            createAccountLError &&
+            createAccountLError?.code === 'auth/email-already-in-use'
+        ) {
+            errorMsg = 'Email already in use';
+        } else if (
+            register &&
+            createAccountLError &&
+            createAccountLError?.code === 'auth/weak-password'
+        ) {
+            errorMsg = 'Password is too weak';
+        } else {
+            errorMsg = '';
         }
 
         if (
             (errorMsg && signInError && Object.keys(signInError).length) ||
-            (googleLoginError && Object.keys(googleLoginError).length)
+            (googleLoginError && Object.keys(googleLoginError).length) ||
+            (createAccountLError && Object.keys(createAccountLError).length)
         ) {
             toast.error(errorMsg, {
                 position: 'bottom-right',
@@ -74,7 +103,7 @@ const SignInSignUp = ({ register }) => {
                 progress: undefined,
             });
         }
-    }, [signInError, googleLoginError]);
+    }, [signInError, googleLoginError, createAccountLError]);
 
     return (
         <>
@@ -265,7 +294,10 @@ const SignInSignUp = ({ register }) => {
                         alt="Yamaha"
                     />
                 </div>
-                {(signInloading || googleLoginLoading) && (
+                {(signInloading ||
+                    googleLoginLoading ||
+                    createAccountLoading ||
+                    updating) && (
                     <div className="absolute inset-0 bg-gray-700 opacity-70 flex justify-center items-center">
                         <Waveform
                             size={40}
