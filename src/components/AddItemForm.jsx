@@ -181,6 +181,9 @@ const AddItemForm = ({ open, setOpen, addItemCallback }) => {
                                                                 stateValue
                                                             );
                                                         }
+                                                        setStateValue(
+                                                            defaultValues
+                                                        );
                                                     }}
                                                 >
                                                     Add Item
