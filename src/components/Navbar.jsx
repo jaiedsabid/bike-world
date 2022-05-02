@@ -6,14 +6,11 @@ import { firebaseAuth } from '../firebase/firebase.init';
 
 const Navbar = () => {
     const [user] = useAuthState(firebaseAuth);
-    const navLinks = [
+
+    let navLinks = [
         {
             name: 'Home',
             path: '/',
-        },
-        {
-            name: 'Inventory',
-            path: '/inventory',
         },
         {
             name: 'Blog',
@@ -24,6 +21,19 @@ const Navbar = () => {
             path: !user ? '/login' : '/logout',
         },
     ];
+    if (user) {
+        const privateLinks = [
+            {
+                name: 'Inventory',
+                path: '/inventory',
+            },
+            {
+                name: 'My Item',
+                path: '/my-item',
+            },
+        ];
+        navLinks.splice(1, 0, ...privateLinks);
+    }
 
     return (
         <Disclosure as="nav" className="bg-white shadow relative z-10">
