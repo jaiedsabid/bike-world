@@ -9,12 +9,11 @@ import {
     useUpdateProfile,
 } from 'react-firebase-hooks/auth';
 import { firebaseAuth } from '../firebase/firebase.init';
-import { Waveform } from '@uiball/loaders';
 import { ToastContainer, toast } from 'react-toastify';
+import Spinner from '../components/Spinner';
 
 // External CSS
 import 'react-toastify/dist/ReactToastify.css';
-import Spinner from '../components/Spinner';
 
 const SignInSignUp = ({ register }) => {
     const [stateValue, setStateValue] = useState({
