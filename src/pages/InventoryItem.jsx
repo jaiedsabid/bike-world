@@ -36,7 +36,9 @@ const InventoryItem = () => {
     const handleRestock = () => {
         setProduct({
             ...product,
-            quantity: product.quantity + parseInt(restockInput.current.value),
+            quantity:
+                product.quantity +
+                Math.abs(parseInt(restockInput.current.value)),
         });
 
         // Reset the input value.
