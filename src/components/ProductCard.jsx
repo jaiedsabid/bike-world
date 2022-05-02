@@ -9,6 +9,8 @@ const ProductCard = ({
     supplier,
     price,
     quantity,
+    enableDeleteBtn,
+    deleteBtnCallback,
 }) => {
     return (
         <div className="group relative bg-white border border-b-0 border-gray-200 rounded-lg flex flex-col overflow-hidden cursor-pointer hover:scale-105 transition-all duration-200 ease-in-out">
@@ -35,12 +37,26 @@ const ProductCard = ({
                     </div>
                 </div>
             </div>
-            <Link
-                to={`/inventory/${id}`}
-                className="w-full flex justify-center text-sm font-semibold p-3 border-0 rounded-b outline-none bg-gray-200 group-hover:bg-gray-300 transition-all duration-200 ease-in-out"
-            >
-                Update
-            </Link>
+            <div className="rounded-b">
+                <Link
+                    to={`/inventory/${id}`}
+                    className="w-full flex justify-center text-sm font-semibold p-3 border-0 outline-none bg-gray-200 group-hover:bg-gray-300 transition-all duration-200 ease-in-out"
+                >
+                    Update
+                </Link>
+                {enableDeleteBtn && (
+                    <button
+                        className="w-full flex justify-center text-sm font-semibold p-3 border-0 outline-none bg-gray-200 group-hover:bg-red-600 group-hover:text-white transition-all duration-200 ease-in-out"
+                        onClick={() => {
+                            if (typeof deleteBtnCallback === 'function') {
+                                deleteBtnCallback(id);
+                            }
+                        }}
+                    >
+                        Delete
+                    </button>
+                )}
+            </div>
         </div>
     );
 };
