@@ -14,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 // External CSS
 import 'react-toastify/dist/ReactToastify.css';
+import Spinner from '../components/Spinner';
 
 const SignInSignUp = ({ register }) => {
     const [stateValue, setStateValue] = useState({
@@ -340,16 +341,7 @@ const SignInSignUp = ({ register }) => {
                     googleLoginLoading ||
                     createAccountLoading ||
                     updating ||
-                    sending) && (
-                    <div className="absolute inset-0 bg-gray-700 opacity-70 flex justify-center items-center">
-                        <Waveform
-                            size={40}
-                            lineWeight={3.5}
-                            speed={1}
-                            color="white"
-                        />
-                    </div>
-                )}
+                    sending) && <Spinner />}
             </div>
             <ToastContainer
                 position="bottom-right"
