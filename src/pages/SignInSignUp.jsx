@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     useAuthState,
     useCreateUserWithEmailAndPassword,
+    useSendPasswordResetEmail,
     useSignInWithEmailAndPassword,
     useSignInWithGoogle,
     useUpdateProfile,
@@ -15,6 +16,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SignInSignUp = ({ register }) => {
+    const [stateValue, setStateValue] = useState({
+        email: '',
+        password: '',
+        fullName: '',
+    });
     const navigate = useNavigate();
     const location = useLocation();
     const fromURL = location.state ? location.state.from : '/';
@@ -32,6 +38,8 @@ const SignInSignUp = ({ register }) => {
         sendEmailVerification: true,
     });
     const [updateProfile, updating] = useUpdateProfile(firebaseAuth);
+    const [sendPasswordResetEmail, sending, resetPasswordError] =
+        useSendPasswordResetEmail(firebaseAuth);
     const pageConfig = {
         register: {
             title: 'Sign up for an account',
@@ -45,27 +53,46 @@ const SignInSignUp = ({ register }) => {
         },
     };
 
+    const handleOnChange = (event) => {
+        const { name, value } = event.target;
+        setStateValue({ ...stateValue, [name]: value });
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const {
-            target: {
-                email: { value: email },
-                password: { value: password },
-            },
-        } = event;
+        const { email, password, fullName } = stateValue;
 
         if (register) {
-            const {
-                target: {
-                    fullName: { value: fullName },
-                },
-            } = event;
-
             await createUserWithEmailAndPassword(email, password);
             await updateProfile({ displayName: fullName });
         } else {
             await signInWithEmailAndPassword(email, password);
         }
+    };
+
+    const handleForgetPassword = async () => {
+        if (sending) {
+            return;
+        }
+
+        if (!stateValue.email) {
+            return displayToast('Please enter your email address', 'error');
+        }
+
+        await sendPasswordResetEmail(stateValue.email);
+        displayToast('Password reset email sent');
+    };
+
+    const displayToast = (message, type = 'success') => {
+        toast[type](message, {
+            position: 'bottom-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
     };
 
     useEffect(() => {
@@ -96,17 +123,14 @@ const SignInSignUp = ({ register }) => {
             (googleLoginError && Object.keys(googleLoginError).length) ||
             (createAccountLError && Object.keys(createAccountLError).length)
         ) {
-            toast.error(errorMsg, {
-                position: 'bottom-right',
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            displayToast(errorMsg, 'error');
         }
-    }, [signInError, googleLoginError, createAccountLError]);
+    }, [
+        signInError,
+        googleLoginError,
+        createAccountLError,
+        resetPasswordError,
+    ]);
 
     useEffect(() => {
         if (user) {
@@ -197,6 +221,7 @@ const SignInSignUp = ({ register }) => {
                                                     type="text"
                                                     required
                                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                    onChange={handleOnChange}
                                                 />
                                             </div>
                                         </div>
@@ -217,6 +242,7 @@ const SignInSignUp = ({ register }) => {
                                                 autoComplete="email"
                                                 required
                                                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                onChange={handleOnChange}
                                             />
                                         </div>
                                     </div>
@@ -236,6 +262,7 @@ const SignInSignUp = ({ register }) => {
                                                 autoComplete="current-password"
                                                 required
                                                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                onChange={handleOnChange}
                                             />
                                         </div>
                                     </div>
@@ -262,7 +289,13 @@ const SignInSignUp = ({ register }) => {
 
                                         {!register && (
                                             <div className="text-sm">
-                                                <button className="font-medium text-blue-600 hover:text-blue-500">
+                                                <button
+                                                    type="button"
+                                                    className="font-medium text-blue-600 hover:text-blue-500"
+                                                    onClick={
+                                                        handleForgetPassword
+                                                    }
+                                                >
                                                     Forgot your password?
                                                 </button>
                                             </div>
@@ -306,7 +339,8 @@ const SignInSignUp = ({ register }) => {
                 {(signInloading ||
                     googleLoginLoading ||
                     createAccountLoading ||
-                    updating) && (
+                    updating ||
+                    sending) && (
                     <div className="absolute inset-0 bg-gray-700 opacity-70 flex justify-center items-center">
                         <Waveform
                             size={40}
