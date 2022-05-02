@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { withProtectedRoute } from '../utils/withHOCs';
+import Button from '../components/Button';
 import { PRODUCTS as products } from '../data/dummyData';
 import { classNames } from '../utils/helpers';
 import { ChevronRightIcon } from '@heroicons/react/solid';
@@ -22,6 +23,13 @@ const InventoryItem = () => {
     useEffect(() => {
         setProduct(products.find((product) => +product.id === +id));
     }, []);
+
+    const handleDeliver = () => {
+        setProduct({
+            ...product,
+            quantity: product.quantity > 0 ? product.quantity - 1 : 0,
+        });
+    };
 
     return (
         <div className="bg-white">
@@ -73,39 +81,47 @@ const InventoryItem = () => {
                                     {product.price}
                                 </p>
                             </div>
-                            {/* Available quantity */}
-                            <strong className="mt-5 inline-flex items-center border border-gray-200 rounded relative px-2.5 py-1.5 text-lg font-medium">
-                                <span
-                                    className={classNames(
-                                        'animate-ping w-2.5 h-2.5 rounded-full absolute -top-1 -left-1',
-                                        product.quantity === 0
-                                            ? 'bg-red-600/75'
-                                            : 'bg-green-600/75'
-                                    )}
-                                ></span>
-                                <span
-                                    className={classNames(
-                                        'w-2.5 h-2.5 rounded-full absolute -top-1 -left-1',
-                                        product.quantity === 0
-                                            ? 'bg-red-600'
-                                            : 'bg-green-600'
-                                    )}
-                                ></span>
-                                <span className="text-gray-700">
-                                    Available Quantity:
-                                </span>
+                            <div className="mt-5 flex items-center gap-3">
+                                {/* Available quantity */}
+                                <strong className="inline-flex items-center border border-gray-200 rounded relative px-2.5 py-1.5 text-lg font-medium">
+                                    <span
+                                        className={classNames(
+                                            'animate-ping w-2.5 h-2.5 rounded-full absolute -top-1 -left-1',
+                                            product.quantity === 0
+                                                ? 'bg-red-600/75'
+                                                : 'bg-green-600/75'
+                                        )}
+                                    ></span>
+                                    <span
+                                        className={classNames(
+                                            'w-2.5 h-2.5 rounded-full absolute -top-1 -left-1',
+                                            product.quantity === 0
+                                                ? 'bg-red-600'
+                                                : 'bg-green-600'
+                                        )}
+                                    ></span>
+                                    <span className="text-gray-700">
+                                        Available Quantity:
+                                    </span>
 
-                                <span
-                                    className={classNames(
-                                        'ml-1.5',
-                                        product.quantity === 0
-                                            ? 'text-red-700'
-                                            : 'text-green-700'
-                                    )}
+                                    <span
+                                        className={classNames(
+                                            'ml-1.5',
+                                            product.quantity === 0
+                                                ? 'text-red-700'
+                                                : 'text-green-700'
+                                        )}
+                                    >
+                                        {product.quantity}
+                                    </span>
+                                </strong>
+                                <Button
+                                    onClick={handleDeliver}
+                                    disabled={product.quantity === 0}
                                 >
-                                    {product.quantity}
-                                </span>
-                            </strong>
+                                    Delivered
+                                </Button>
+                            </div>
                         </div>
 
                         {/* Image gallery */}
