@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import { PRODUCTS as products } from '../data/dummyData';
 import { classNames } from '../utils/helpers';
 import { ChevronRightIcon } from '@heroicons/react/solid';
+import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 
 const InventoryItem = () => {
     const { id } = useParams();
@@ -184,6 +185,15 @@ const InventoryItem = () => {
                                     />
                                 </div>
                                 <Button onClick={handleRestock}>Update</Button>
+                            </div>
+                            <div className="my-7 flex justify-start">
+                                <Link
+                                    to="/inventory"
+                                    className="w-full md:w-auto inline-flex justify-center items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 hover:shadow"
+                                >
+                                    Manage Inventories
+                                    <ArrowNarrowRightIcon className="w-4 h-4 ml-2" />
+                                </Link>
                             </div>
                         </div>
                     </div>
