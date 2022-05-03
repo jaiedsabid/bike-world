@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import Button from './Button';
+import { classNames } from '../utils/helpers';
 
 const AddItemForm = ({ open, setOpen, addItemCallback }) => {
     const defaultValues = {
@@ -133,11 +134,12 @@ const AddItemForm = ({ open, setOpen, addItemCallback }) => {
                                                     ) => (
                                                         <div
                                                             key={name}
-                                                            className={
+                                                            className={classNames(
                                                                 indx + 1 ===
-                                                                    inputFields.length &&
-                                                                'mb-5'
-                                                            }
+                                                                    inputFields.length
+                                                                    ? 'mb-5'
+                                                                    : 'mb-0'
+                                                            )}
                                                         >
                                                             <label
                                                                 htmlFor={name}
