@@ -15,6 +15,7 @@ const InventoryItem = () => {
     const { id } = useParams();
     const restockInput = useRef();
     const URL = getAPIRoute('http://localhost:5000', 'GET', id);
+    const updateURL = getAPIRoute('http://localhost:5000', 'UPDATE', id);
     const [setProduct, product, isLoading, isError] = useFetch(URL);
     const breadcrumb = [
         {
@@ -33,11 +34,6 @@ const InventoryItem = () => {
         }
 
         try {
-            const updateURL = getAPIRoute(
-                'http://localhost:5000',
-                'UPDATE',
-                id
-            );
             const response = await fetch(updateURL, {
                 method: 'POST',
                 headers: {
@@ -54,13 +50,24 @@ const InventoryItem = () => {
         }
     };
 
-    const handleRestock = () => {
-        setProduct({
-            ...product,
-            quantity:
-                product?.quantity +
-                Math.abs(parseInt(restockInput.current.value)),
-        });
+    const handleRestock = async () => {
+        const inpQuantity = restockInput.current.value;
+        try {
+            const response = await fetch(updateURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    quantity:
+                        product.quantity + Math.abs(parseInt(inpQuantity)),
+                }),
+            });
+            const data = await response.json();
+            setProduct(data);
+        } catch (error) {
+            displayToast('Failed to restock the product!', 'error');
+        }
 
         // Reset the input value.
         restockInput.current.value = '';
