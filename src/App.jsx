@@ -13,30 +13,15 @@ const App = () => {
     return (
         <div className="App">
             <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <PageLayout>
-                            <Home />
-                        </PageLayout>
-                    }
-                />
+                <Route path="/" element={<PageLayout Component={Home} />} />
                 <Route path="/blog" element={<h1>Blog</h1>} />
                 <Route
                     path="/inventory/:id"
-                    element={
-                        <PageLayout>
-                            <InventoryItem />
-                        </PageLayout>
-                    }
+                    element={<PageLayout Component={InventoryItem} />}
                 />
                 <Route
                     path="/inventory"
-                    element={
-                        <PageLayout>
-                            <Inventory />
-                        </PageLayout>
-                    }
+                    element={<PageLayout Component={Inventory} />}
                 />
                 <Route key="login" path="/login" element={<SignInSignUp />} />
                 <Route

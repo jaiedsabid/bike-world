@@ -1,11 +1,11 @@
 import Footer from './Footer';
 import Navbar from './Navbar';
 
-const PageLayout = ({ children }) => {
+const PageLayout = ({ Component }) => {
     return (
         <>
             <Navbar />
-            {children}
+            <Component />
             <Footer />
         </>
     );
