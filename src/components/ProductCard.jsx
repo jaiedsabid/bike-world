@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ProductCard = ({
-    id,
+    _id,
     imageSrc,
     name,
     description,
@@ -39,7 +39,7 @@ const ProductCard = ({
             </div>
             <div className="rounded-b">
                 <Link
-                    to={`/inventory/${id}`}
+                    to={`/inventory/${_id}`}
                     className="w-full flex justify-center text-sm font-semibold p-3 border-0 outline-none bg-gray-200 group-hover:bg-gray-300 transition-all duration-200 ease-in-out"
                 >
                     Update
@@ -49,7 +49,7 @@ const ProductCard = ({
                         className="w-full flex justify-center text-sm font-semibold p-3 border-0 outline-none bg-gray-200 group-hover:bg-red-600 group-hover:text-white transition-all duration-200 ease-in-out"
                         onClick={() => {
                             if (typeof deleteBtnCallback === 'function') {
-                                deleteBtnCallback(id);
+                                deleteBtnCallback(_id);
                             }
                         }}
                     >

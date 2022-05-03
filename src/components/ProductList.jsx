@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { PlusSmIcon } from '@heroicons/react/solid';
@@ -9,7 +9,8 @@ import ProductCard from './ProductCard';
 import Button from './Button';
 import AddItemForm from './AddItemForm';
 import { ToastContainer, toast } from 'react-toastify';
-import { PRODUCTS } from '../data/dummyData';
+import { useFetch } from '../utils/hooks';
+import { getAPIRoute } from '../utils/constants';
 
 // External CSS
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -24,13 +25,10 @@ const ProductList = ({
     className,
     ...props
 }) => {
-    const [products, setProducts] = useState([]);
     const [openSlideOver, setOpenSlideOver] = useState(false);
     const Modal = withReactContent(Swal);
-
-    useEffect(() => {
-        setProducts(PRODUCTS.slice(0, limit ? limit : PRODUCTS.length));
-    }, []);
+    const URL = getAPIRoute('http://localhost:5000', 'GET');
+    const [setProducts, products, isLoading, isError, errorMsg] = useFetch(URL);
 
     const handleDelete = (id) => {
         Modal.fire({
@@ -84,13 +82,13 @@ const ProductList = ({
                     </div>
                 )}
 
-                {products.length > 0 ? (
+                {products?.length > 0 ? (
                     <div className="mt-8 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
                         {products
                             .slice(0, limit ? limit : products.length)
                             .map((product) => (
                                 <ProductCard
-                                    key={product.id}
+                                    key={product._id}
                                     {...product}
                                     enableDeleteBtn={enableDeleteBtn}
                                     deleteBtnCallback={handleDelete}
@@ -135,4 +133,4 @@ const ProductList = ({
     );
 };
 
-export default ProductList;
+export default memo(ProductList);
