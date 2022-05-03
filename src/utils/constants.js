@@ -3,7 +3,7 @@ export const getAPIRoute = (baseURL, action, param = '') => {
         GET: '/api/products/',
         CREATE: '/api/products/create/',
         UPDATE: '/api/products/update/',
-        DELETE: '/api/products/',
+        DELETE: '/api/products/delete/',
     };
 
     if (param) {
