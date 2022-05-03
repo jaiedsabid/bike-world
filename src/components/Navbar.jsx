@@ -28,8 +28,8 @@ const Navbar = () => {
                 path: '/inventory',
             },
             {
-                name: 'My Item',
-                path: '/my-item',
+                name: 'My Items',
+                path: '/my-items',
             },
         ];
         navLinks.splice(1, 0, ...privateLinks);

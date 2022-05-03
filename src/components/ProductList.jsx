@@ -25,6 +25,7 @@ const ProductList = ({
     manageInventoryBtn,
     addNewItemBtn,
     enableDeleteBtn = false,
+    byUser = false,
     className,
     ...props
 }) => {
@@ -33,6 +34,8 @@ const ProductList = ({
     const Modal = withReactContent(Swal);
     const URL = getAPIRoute('http://localhost:5000', 'GET');
     const [setProducts, products, isLoading, isError, errorMsg] = useFetch(URL);
+
+    let totalProductsByUser = 0;
 
     const handleDelete = async (id) => {
         Modal.fire({
@@ -126,6 +129,12 @@ const ProductList = ({
         return <Spinner />;
     }
 
+    if (byUser) {
+        totalProductsByUser = products.filter(
+            (product) => product.createdBy === user.email
+        ).length;
+    }
+
     return (
         <div className={classNames('bg-white', className)} {...props}>
             <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -146,10 +155,17 @@ const ProductList = ({
                     </div>
                 )}
 
-                {products?.length > 0 ? (
+                {(!byUser && products?.length > 0) ||
+                (totalProductsByUser && byUser) ? (
                     <div className="mt-8 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
                         {products
                             .slice(0, limit ? limit : products.length)
+                            .filter((product) => {
+                                if (byUser) {
+                                    return product.createdBy === user.email;
+                                }
+                                return true;
+                            })
                             .map((product) => (
                                 <ProductCard
                                     key={product._id}

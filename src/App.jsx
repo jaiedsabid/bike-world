@@ -4,6 +4,7 @@ import NotFoundRedirect from './components/NotFoundRedirect';
 import Home from './pages/Home';
 import Inventory from './pages/Inventory';
 import InventoryItem from './pages/InventoryItem';
+import MyItems from './pages/MyItems';
 import NotFound404 from './pages/NotFound404';
 import SignInSignUp from './pages/SignInSignUp';
 import SignOut from './pages/SignOut';
@@ -16,6 +17,7 @@ const App = () => {
                 <Route path="/blog" element={<h1>Blog</h1>} />
                 <Route path="/inventory/:id" element={<InventoryItem />} />
                 <Route path="/inventory" element={<Inventory />} />
+                <Route path="/my-items" element={<MyItems />} />
                 <Route key="login" path="/login" element={<SignInSignUp />} />
                 <Route
                     key="register"

@@ -46,7 +46,7 @@ export const PRODUCTS = [
     {
         id: 5,
         name: 'Yamaha FZS FI Double Disc',
-        price: '2,500',
+        price: '2500',
         description:
             'One of the best Yamaha FZS FI Double Disc bikes in the world. It has a very good suspension and a very good handling.',
         supplier: 'Yamaha',
