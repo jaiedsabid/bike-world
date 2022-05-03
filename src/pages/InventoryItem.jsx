@@ -1,17 +1,20 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Fragment, useRef } from 'react';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { withProtectedRoute } from '../utils/withHOCs';
 import PageLayout from '../components/PageLayout';
 import Button from '../components/Button';
 import { classNames } from '../utils/helpers';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
-import { PRODUCTS as products } from '../data/dummyData';
+import Spinner from '../components/Spinner';
+import { useFetch } from '../utils/hooks';
+import { getAPIRoute } from '../utils/constants';
 
 const InventoryItem = () => {
     const { id } = useParams();
-    const [product, setProduct] = useState({});
     const restockInput = useRef();
+    const URL = getAPIRoute('http://localhost:5000', 'GET', id);
+    const [setProduct, product, isLoading, isError] = useFetch(URL);
     const breadcrumb = [
         {
             name: 'Home',
@@ -23,14 +26,10 @@ const InventoryItem = () => {
         },
     ];
 
-    useEffect(() => {
-        setProduct(products.find((product) => +product.id === +id));
-    }, []);
-
     const handleDeliver = () => {
         setProduct({
             ...product,
-            quantity: product.quantity > 0 ? product.quantity - 1 : 0,
+            quantity: product?.quantity > 0 ? product?.quantity - 1 : 0,
         });
     };
 
@@ -38,13 +37,21 @@ const InventoryItem = () => {
         setProduct({
             ...product,
             quantity:
-                product.quantity +
+                product?.quantity +
                 Math.abs(parseInt(restockInput.current.value)),
         });
 
         // Reset the input value.
         restockInput.current.value = '';
     };
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    if (!isLoading && isError) {
+        return <Navigate to="/404" />;
+    }
 
     return (
         <PageLayout>
@@ -78,7 +85,7 @@ const InventoryItem = () => {
 
                             <li>
                                 <p className="block transition-colors hover:text-gray-700 font-semibold">
-                                    {product.name}
+                                    {product?.name}
                                 </p>
                             </li>
                         </ol>
@@ -88,13 +95,13 @@ const InventoryItem = () => {
                             <div className="lg:col-start-8 lg:col-span-5">
                                 <div className="flex justify-between">
                                     <h1 className="text-xl font-medium text-gray-900">
-                                        {product.name}
+                                        {product?.name}
                                         <span className="mt-2 block text-sm font-medium italic text-gray-500">
-                                            Supplier: {product.supplier}
+                                            Supplier: {product?.supplier}
                                         </span>
                                     </h1>
                                     <p className="text-xl font-medium text-gray-900">
-                                        ${product.price}
+                                        ${product?.price}
                                     </p>
                                 </div>
                                 <div className="mt-5 flex items-center gap-3">
@@ -103,7 +110,7 @@ const InventoryItem = () => {
                                         <span
                                             className={classNames(
                                                 'animate-ping w-2.5 h-2.5 rounded-full absolute -top-1 -left-1',
-                                                product.quantity === 0
+                                                product?.quantity === 0
                                                     ? 'bg-red-600/75'
                                                     : 'bg-green-600/75'
                                             )}
@@ -111,7 +118,7 @@ const InventoryItem = () => {
                                         <span
                                             className={classNames(
                                                 'w-2.5 h-2.5 rounded-full absolute -top-1 -left-1',
-                                                product.quantity === 0
+                                                product?.quantity === 0
                                                     ? 'bg-red-600'
                                                     : 'bg-green-600'
                                             )}
@@ -123,17 +130,17 @@ const InventoryItem = () => {
                                         <span
                                             className={classNames(
                                                 'ml-1.5',
-                                                product.quantity === 0
+                                                product?.quantity === 0
                                                     ? 'text-red-700'
                                                     : 'text-green-700'
                                             )}
                                         >
-                                            {product.quantity}
+                                            {product?.quantity}
                                         </span>
                                     </strong>
                                     <Button
                                         onClick={handleDeliver}
-                                        disabled={product.quantity === 0}
+                                        disabled={product?.quantity === 0}
                                     >
                                         Delivered
                                     </Button>
@@ -146,8 +153,8 @@ const InventoryItem = () => {
 
                                 <div className="grid grid-cols-1">
                                     <img
-                                        src={product.imageSrc}
-                                        alt={product.name}
+                                        src={product?.imageSrc}
+                                        alt={product?.name}
                                         className="w-full h-full rounded-lg hidden lg:block"
                                     />
                                 </div>
@@ -162,7 +169,7 @@ const InventoryItem = () => {
                                 <div
                                     className="mt-4 prose prose-sm text-gray-500"
                                     dangerouslySetInnerHTML={{
-                                        __html: product.description,
+                                        __html: product?.description,
                                     }}
                                 />
                             </div>
