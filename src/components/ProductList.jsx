@@ -9,6 +9,7 @@ import ProductCard from './ProductCard';
 import Button from './Button';
 import AddItemForm from './AddItemForm';
 import { ToastContainer, toast } from 'react-toastify';
+import Spinner from './Spinner';
 import { useFetch } from '../utils/hooks';
 import { getAPIRoute } from '../utils/constants';
 
@@ -61,6 +62,10 @@ const ProductList = ({
             progress: undefined,
         });
     };
+
+    if (isLoading) {
+        return <Spinner />;
+    }
 
     return (
         <div className={classNames('bg-white', className)} {...props}>
