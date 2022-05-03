@@ -16,6 +16,8 @@ import { getAPIRoute } from '../utils/constants';
 // External CSS
 import 'sweetalert2/dist/sweetalert2.min.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { firebaseAuth } from '../firebase/firebase.init';
 
 const ProductList = ({
     title,
@@ -26,33 +28,90 @@ const ProductList = ({
     className,
     ...props
 }) => {
+    const [user] = useAuthState(firebaseAuth);
     const [openSlideOver, setOpenSlideOver] = useState(false);
     const Modal = withReactContent(Swal);
     const URL = getAPIRoute('http://localhost:5000', 'GET');
     const [setProducts, products, isLoading, isError, errorMsg] = useFetch(URL);
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         Modal.fire({
             title: 'Do you want to delete the item?',
             showConfirmButton: false,
             showDenyButton: true,
             showCancelButton: true,
             denyButtonText: `Delete`,
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isDenied) {
-                Modal.fire('Deleted!', '', 'success');
+                const success = await deleteItem(id);
 
-                // Remove the item from the list
-                setProducts(products.filter((product) => product.id !== id));
+                if (!success) {
+                    return Modal.fire(
+                        'Failed to delete the item!',
+                        '',
+                        'error'
+                    );
+                }
+
+                Modal.fire('Deleted!', '', 'success');
             }
         });
     };
 
-    const handleAddItem = (product) => {
-        setProducts([...products, product]);
+    const deleteItem = async (id) => {
+        const deleteURL = getAPIRoute('http://localhost:5000', 'DELETE', id);
+        try {
+            const response = await fetch(deleteURL, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                setProducts(products.filter((product) => product._id !== id));
+                return true;
+            }
+
+            return false;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    };
+
+    const addNewItem = async (item) => {
+        const addURL = getAPIRoute('http://localhost:5000', 'CREATE');
+        try {
+            const response = await fetch(addURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ...item, createdBy: user.email }),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setProducts([...products, data]);
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    };
+
+    const handleAddItem = async (product) => {
+        const success = await addNewItem(product);
         setOpenSlideOver(false);
 
-        toast.success('Item added successfully', {
+        if (!success) {
+            return displayToast('Failed to add the item!', 'error');
+        }
+
+        displayToast('Item added successfully', 'success');
+    };
+
+    const displayToast = (message, type = 'success') => {
+        toast[type](message, {
             position: 'bottom-right',
             autoClose: 3000,
             hideProgressBar: false,
