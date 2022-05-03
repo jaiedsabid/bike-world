@@ -1,15 +1,18 @@
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { firebaseAuth } from '../firebase/firebase.init';
 
 export const withProtectedRoute = (Component) => (props) => {
-    const [user, loading] = useAuthState(firebaseAuth);
     const location = useLocation();
-    const navigate = useNavigate();
+    const [user, loading] = useAuthState(firebaseAuth);
 
-    if (!user && !loading) {
-        return navigate('/login', { state: { from: location } });
+    if (loading) {
+        return null;
     }
 
-    return user ? <Component {...props} /> : null;
+    if (!user && !loading) {
+        return <Navigate to="/login" state={{ from: location }} />;
+    }
+
+    return user && !loading ? <Component {...props} /> : null;
 };
