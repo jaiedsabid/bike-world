@@ -1,14 +1,15 @@
+import { memo } from 'react';
 import Footer from './Footer';
 import Navbar from './Navbar';
 
-const PageLayout = ({ Component }) => {
+const PageLayout = ({ children }) => {
     return (
         <>
             <Navbar />
-            <Component />
+            {children}
             <Footer />
         </>
     );
 };
 
-export default PageLayout;
+export default memo(PageLayout);

@@ -1,11 +1,12 @@
 import Hero from '../components/Hero';
 import { MailIcon, PhoneIcon } from '@heroicons/react/outline';
 import { Link } from 'react-router-dom';
+import PageLayout from '../components/PageLayout';
 import ProductList from '../components/ProductList';
 
 const Home = () => {
     return (
-        <>
+        <PageLayout>
             <Hero />
             {/* Status section */}
             <div className="bg-gray-50 pt-12 sm:pt-16">
@@ -202,7 +203,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </PageLayout>
     );
 };
 

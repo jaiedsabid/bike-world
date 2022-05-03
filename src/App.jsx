@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import NotFoundRedirect from './components/NotFoundRedirect';
-import PageLayout from './components/PageLayout';
 import Home from './pages/Home';
 import Inventory from './pages/Inventory';
 import InventoryItem from './pages/InventoryItem';
@@ -13,16 +12,10 @@ const App = () => {
     return (
         <div className="App">
             <Routes>
-                <Route path="/" element={<PageLayout Component={Home} />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/blog" element={<h1>Blog</h1>} />
-                <Route
-                    path="/inventory/:id"
-                    element={<PageLayout Component={InventoryItem} />}
-                />
-                <Route
-                    path="/inventory"
-                    element={<PageLayout Component={Inventory} />}
-                />
+                <Route path="/inventory/:id" element={<InventoryItem />} />
+                <Route path="/inventory" element={<Inventory />} />
                 <Route key="login" path="/login" element={<SignInSignUp />} />
                 <Route
                     key="register"
