@@ -176,7 +176,9 @@ const InventoryItem = () => {
                                                         : 'text-green-700'
                                                 )}
                                             >
-                                                {product?.quantity}
+                                                {product?.quantity
+                                                    ? product?.quantity
+                                                    : 'Sold Out'}
                                             </span>
                                         </strong>
                                         <Button
