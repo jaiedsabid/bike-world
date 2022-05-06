@@ -4,12 +4,12 @@ import { getAuth } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: 'AIzaSyCSbKtxKvHPiIuDNwyWDZMSWGfTL5hUkeo',
-    authDomain: 'bike-world-4bc7b.firebaseapp.com',
-    projectId: 'bike-world-4bc7b',
-    storageBucket: 'bike-world-4bc7b.appspot.com',
-    messagingSenderId: '780497825118',
-    appId: '1:780497825118:web:87a7d827d660eedd7ef3cf',
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
