@@ -127,7 +127,7 @@ const AddItemForm = ({ open, setOpen, addItemCallback }) => {
                                                         src={
                                                             stateValue.imageSrc
                                                         }
-                                                        className="w-full h-60 object-cover rounded"
+                                                        className="w-full h-auto rounded"
                                                     />
                                                 </div>
                                             )}
