@@ -9,7 +9,7 @@ const AddItemForm = ({ open, setOpen, addItemCallback }) => {
         name: '',
         price: '',
         description: '',
-        supplier: 'Yamaha',
+        supplier: '',
         imageSrc: '',
         quantity: 0,
     };
