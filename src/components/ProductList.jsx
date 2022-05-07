@@ -69,7 +69,7 @@ const ProductList = ({
     };
 
     const deleteItem = async (id) => {
-        const deleteURL = getAPIRoute('http://localhost:5000', 'DELETE', id);
+        const deleteURL = getAPIRoute(API_BASE_URL, 'DELETE', id);
         try {
             const response = await fetch(deleteURL, {
                 method: 'DELETE',
@@ -88,7 +88,7 @@ const ProductList = ({
     };
 
     const addNewItem = async (item) => {
-        const addURL = getAPIRoute('http://localhost:5000', 'CREATE');
+        const addURL = getAPIRoute(API_BASE_URL, 'CREATE');
         try {
             const response = await fetch(addURL, {
                 method: 'POST',
