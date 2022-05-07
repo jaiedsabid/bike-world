@@ -14,7 +14,7 @@ const Navbar = () => {
         },
         {
             name: 'Blog',
-            path: '/blog',
+            path: '/blogs',
         },
         {
             name: !user ? 'Login' : 'Logout',
