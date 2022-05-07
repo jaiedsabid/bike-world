@@ -9,6 +9,7 @@ import {
     useUpdateProfile,
 } from 'react-firebase-hooks/auth';
 import { firebaseAuth } from '../firebase/firebase.init';
+import { API_BASE_URL, getAPIRoute } from '../utils/constants';
 import { ToastContainer, toast } from 'react-toastify';
 import Spinner from '../components/Spinner';
 
@@ -83,6 +84,32 @@ const SignInSignUp = ({ register }) => {
         displayToast('Password reset email sent');
     };
 
+    const handleAccessToken = async (email) => {
+        const URL = getAPIRoute(API_BASE_URL, 'LOGIN');
+        try {
+            const response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user: email }),
+            });
+            const data = await response.json();
+            if (data?.accessToken && typeof data?.accessToken === 'string') {
+                localStorage.setItem('access-token', data.accessToken);
+            }
+        } catch (error) {
+            // Do nothing
+        }
+    };
+
+    const handleSuccessLogin = async () => {
+        if (user) {
+            await handleAccessToken(user.email);
+            navigate(fromURL, { replace: true });
+        }
+    };
+
     const displayToast = (message, type = 'success') => {
         toast[type](message, {
             position: 'bottom-right',
@@ -133,9 +160,7 @@ const SignInSignUp = ({ register }) => {
     ]);
 
     useEffect(() => {
-        if (user) {
-            navigate(fromURL, { replace: true });
-        }
+        handleSuccessLogin();
     }, [user]);
 
     return (

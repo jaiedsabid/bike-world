@@ -4,6 +4,7 @@ export const getAPIRoute = (baseURL, action, param = '') => {
         CREATE: '/api/products/create/',
         UPDATE: '/api/products/update/',
         DELETE: '/api/products/delete/',
+        LOGIN: '/api/user/login/',
     };
 
     if (param) {

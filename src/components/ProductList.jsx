@@ -11,7 +11,7 @@ import AddItemForm from './AddItemForm';
 import { ToastContainer, toast } from 'react-toastify';
 import Spinner from './Spinner';
 import { useFetch } from '../utils/hooks';
-import { getAPIRoute } from '../utils/constants';
+import { API_BASE_URL, getAPIRoute } from '../utils/constants';
 
 // External CSS
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -32,7 +32,7 @@ const ProductList = ({
     const [user] = useAuthState(firebaseAuth);
     const [openSlideOver, setOpenSlideOver] = useState(false);
     const Modal = withReactContent(Swal);
-    const URL = getAPIRoute('http://localhost:5000', 'GET');
+    const URL = getAPIRoute(API_BASE_URL, 'GET');
     const [setProducts, products, isLoading, isError, errorMsg] = useFetch(URL);
 
     let totalProductsByUser = 0;
