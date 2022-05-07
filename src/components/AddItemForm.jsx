@@ -121,6 +121,16 @@ const AddItemForm = ({ open, setOpen, addItemCallback }) => {
                                         {/* Replace with your content */}
                                         <div className="absolute inset-0 px-4 sm:px-6">
                                             {/* Add product form */}
+                                            {stateValue.imageSrc && (
+                                                <div className="mt-2 mb-4">
+                                                    <img
+                                                        src={
+                                                            stateValue.imageSrc
+                                                        }
+                                                        className="w-full h-60 object-cover rounded"
+                                                    />
+                                                </div>
+                                            )}
                                             <div className="w-full grid grid-cols-1 gap-3">
                                                 {inputFields.map(
                                                     (
