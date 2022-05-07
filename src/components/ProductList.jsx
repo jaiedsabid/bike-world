@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { PlusSmIcon } from '@heroicons/react/solid';
 import Swal from 'sweetalert2';
@@ -12,12 +12,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import Spinner from './Spinner';
 import { useFetch } from '../utils/hooks';
 import { API_BASE_URL, getAPIRoute } from '../utils/constants';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { firebaseAuth } from '../firebase/firebase.init';
+import { signOut } from 'firebase/auth';
 
 // External CSS
 import 'sweetalert2/dist/sweetalert2.min.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { firebaseAuth } from '../firebase/firebase.init';
 
 const ProductList = ({
     title,
@@ -30,12 +31,18 @@ const ProductList = ({
     ...props
 }) => {
     const [user] = useAuthState(firebaseAuth);
+    const navigate = useNavigate();
+    const location = useLocation();
     const [openSlideOver, setOpenSlideOver] = useState(false);
     const Modal = withReactContent(Swal);
     const URL = getAPIRoute(API_BASE_URL, 'GET');
-    const [setProducts, products, isLoading, isError, errorMsg] = useFetch(URL);
-
-    let totalProductsByUser = 0;
+    const [setProducts, products, isLoading, isError, errorMsg] = useFetch(
+        byUser ? `${URL}?user=${user.email}` : URL,
+        {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('access-token')}`,
+        }
+    );
 
     const handleDelete = async (id) => {
         Modal.fire({
@@ -129,10 +136,10 @@ const ProductList = ({
         return <Spinner />;
     }
 
-    if (byUser) {
-        totalProductsByUser = products.filter(
-            (product) => product.createdBy === user.email
-        ).length;
+    if (isError) {
+        signOut(firebaseAuth);
+        localStorage.clear();
+        navigate('/login', { from: location, replace: true });
     }
 
     return (
@@ -155,17 +162,10 @@ const ProductList = ({
                     </div>
                 )}
 
-                {(!byUser && products?.length > 0) ||
-                (totalProductsByUser && byUser) ? (
+                {products?.length > 0 ? (
                     <div className="mt-8 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
                         {products
                             .slice(0, limit ? limit : products.length)
-                            .filter((product) => {
-                                if (byUser) {
-                                    return product.createdBy === user.email;
-                                }
-                                return true;
-                            })
                             .map((product) => (
                                 <ProductCard
                                     key={product._id}
