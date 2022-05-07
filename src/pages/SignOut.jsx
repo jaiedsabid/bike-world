@@ -6,6 +6,7 @@ import { Navigate } from 'react-router-dom';
 const SignOut = () => {
     useEffect(() => {
         signOut(firebaseAuth);
+        localStorage.clear();
     }, []);
 
     return <Navigate to="/login" />;
