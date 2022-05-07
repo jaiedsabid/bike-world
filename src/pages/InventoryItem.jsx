@@ -8,14 +8,14 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import Spinner from '../components/Spinner';
 import { useFetch } from '../utils/hooks';
-import { getAPIRoute } from '../utils/constants';
+import { API_BASE_URL, getAPIRoute } from '../utils/constants';
 import { toast, ToastContainer } from 'react-toastify';
 
 const InventoryItem = () => {
     const { id } = useParams();
     const restockInput = useRef();
-    const URL = getAPIRoute('http://localhost:5000', 'GET', id);
-    const updateURL = getAPIRoute('http://localhost:5000', 'UPDATE', id);
+    const URL = getAPIRoute(API_BASE_URL, 'GET', id);
+    const updateURL = getAPIRoute(API_BASE_URL, 'UPDATE', id);
     const [setProduct, product, isLoading, isError] = useFetch(URL);
     const breadcrumb = [
         {
