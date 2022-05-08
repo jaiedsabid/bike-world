@@ -45,6 +45,7 @@ const InventoryItem = () => {
             });
             const data = await response.json();
             setProduct(data);
+            displayToast('Product delivered successfully', 'success');
         } catch (error) {
             displayToast('Failed to deliver the product!', 'error');
         }
@@ -65,6 +66,7 @@ const InventoryItem = () => {
             });
             const data = await response.json();
             setProduct(data);
+            displayToast('Product restocked successfully', 'success');
         } catch (error) {
             displayToast('Failed to restock the product!', 'error');
         }
