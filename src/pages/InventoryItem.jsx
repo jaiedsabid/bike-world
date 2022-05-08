@@ -53,6 +53,14 @@ const InventoryItem = () => {
 
     const handleRestock = async () => {
         const inpQuantity = restockInput.current.value;
+
+        if (inpQuantity <= 0) {
+            return displayToast(
+                'Restock quantity must be greater than 0',
+                'error'
+            );
+        }
+
         try {
             const response = await fetch(updateURL, {
                 method: 'POST',
