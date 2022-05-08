@@ -31,6 +31,10 @@ const Navbar = () => {
                 name: 'My Items',
                 path: '/my-items',
             },
+            {
+                name: 'Add Item',
+                path: '/add-item',
+            },
         ];
         navLinks.splice(1, 0, ...privateLinks);
     }

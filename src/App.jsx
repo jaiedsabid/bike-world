@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import NotFoundRedirect from './components/NotFoundRedirect';
+import AddItem from './pages/AddItem';
 import Blog from './pages/Blog';
 import Home from './pages/Home';
 import Inventory from './pages/Inventory';
@@ -18,6 +19,7 @@ const App = () => {
                 <Route path="/blogs" element={<Blog />} />
                 <Route path="/inventory/:id" element={<InventoryItem />} />
                 <Route path="/inventory" element={<Inventory />} />
+                <Route path="/add-item" element={<AddItem />} />
                 <Route path="/my-items" element={<MyItems />} />
                 <Route key="login" path="/login" element={<SignInSignUp />} />
                 <Route
