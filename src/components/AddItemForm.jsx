@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import Button from './Button';
 import { classNames } from '../utils/helpers';
+import { inputFields } from '../utils/constants';
 
 const AddItemForm = ({ open, setOpen, addItemCallback }) => {
     const defaultValues = {
@@ -14,44 +15,6 @@ const AddItemForm = ({ open, setOpen, addItemCallback }) => {
         quantity: 0,
     };
     const [stateValue, setStateValue] = useState(defaultValues);
-    const inputFields = [
-        {
-            name: 'name',
-            label: 'Name',
-            type: 'text',
-            placeholder: 'Enter name',
-        },
-        {
-            name: 'price',
-            label: 'Price',
-            type: 'number',
-            placeholder: 'Enter price',
-        },
-        {
-            name: 'description',
-            label: 'Description',
-            type: 'text',
-            placeholder: 'Enter description',
-        },
-        {
-            name: 'supplier',
-            label: 'Supplier',
-            type: 'text',
-            placeholder: 'Enter supplier',
-        },
-        {
-            name: 'imageSrc',
-            label: 'Image',
-            type: 'text',
-            placeholder: 'Enter image URL',
-        },
-        {
-            name: 'quantity',
-            label: 'Quantity',
-            type: 'number',
-            placeholder: 'Enter quantity',
-        },
-    ];
 
     const handleChange = (event) => {
         const { name, value } = event.target;
