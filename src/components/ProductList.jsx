@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { PlusSmIcon } from '@heroicons/react/solid';
 import Swal from 'sweetalert2';
@@ -32,7 +32,6 @@ const ProductList = ({
     ...props
 }) => {
     const [user] = useAuthState(firebaseAuth);
-    const navigate = useNavigate();
     const location = useLocation();
     const [openSlideOver, setOpenSlideOver] = useState(false);
     const Modal = withReactContent(Swal);
@@ -146,7 +145,8 @@ const ProductList = ({
     if (isError) {
         signOut(firebaseAuth);
         localStorage.clear();
-        navigate('/login', { from: location, replace: true });
+
+        return <Navigate to="/login" state={{ from: location }} />;
     }
 
     return (
