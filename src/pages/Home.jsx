@@ -117,7 +117,7 @@ const Home = () => {
                             <p className="mt-6 text-base text-gray-500">
                                 Looking for Frequently Asked Questions?{' '}
                                 <Link
-                                    to="/blog"
+                                    to="/blogs"
                                     className="font-medium text-gray-700 underline"
                                 >
                                     View FAQ
