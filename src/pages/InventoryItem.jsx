@@ -35,7 +35,7 @@ const InventoryItem = () => {
 
         try {
             const response = await fetch(updateURL, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -63,7 +63,7 @@ const InventoryItem = () => {
 
         try {
             const response = await fetch(updateURL, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
