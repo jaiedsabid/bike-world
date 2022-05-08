@@ -40,11 +40,20 @@ const AddItem = () => {
 
         const { name, description, supplier, imageSrc, quantity, price } =
             stateValue;
-        if (!name || !description || !supplier || !imageSrc) {
+        if (
+            !name ||
+            !description ||
+            !supplier ||
+            !imageSrc ||
+            quantity === '' ||
+            price === ''
+        ) {
+            setProcessing(false);
             return displayToast('Please fill up all the fields!', 'error');
         }
 
         if (quantity < 0 || price < 0) {
+            setProcessing(false);
             return displayToast(
                 "Quantity and price can't be negative!",
                 'error'
