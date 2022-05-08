@@ -92,7 +92,7 @@ const AddItem = () => {
                             />
                         )}
                         {!stateValue.imageSrc && (
-                            <div className="w-full h-full flex items-center justify-center">
+                            <div className="w-full min-h-[200px] lg:h-full flex items-center justify-center">
                                 <h3 className="text-lg font-semibold text-gray-400">
                                     Image will be displayed here
                                 </h3>
