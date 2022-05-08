@@ -4,23 +4,67 @@ import { XIcon } from '@heroicons/react/outline';
 import Button from './Button';
 import { classNames } from '../utils/helpers';
 import { inputFields } from '../utils/constants';
+import { toast, ToastContainer } from 'react-toastify';
+import { loadingIndicator } from '../utils/icons';
+
+// External CSS
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddItemForm = ({ open, setOpen, addItemCallback }) => {
     const defaultValues = {
         name: '',
-        price: '',
+        price: 0,
         description: '',
         supplier: '',
         imageSrc: '',
         quantity: 0,
     };
     const [stateValue, setStateValue] = useState(defaultValues);
+    const [processing, setProcessing] = useState(false);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setStateValue({
             ...stateValue,
             [name]: value,
+        });
+    };
+
+    const handleAddNewItem = async () => {
+        if (processing) {
+            return;
+        }
+        setProcessing(true);
+
+        const { name, description, supplier, imageSrc, quantity, price } =
+            stateValue;
+        if (!name || !description || !supplier || !imageSrc) {
+            return displayToast('Please fill up all the fields!', 'error');
+        }
+
+        if (quantity < 0 || price < 0) {
+            return displayToast(
+                "Quantity and price can't be negative!",
+                'error'
+            );
+        }
+
+        if (typeof addItemCallback === 'function') {
+            await addItemCallback(stateValue);
+        }
+        setOpen(false);
+        setStateValue(defaultValues);
+    };
+
+    const displayToast = (message, type = 'success') => {
+        toast[type](message, {
+            position: 'bottom-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
         });
     };
 
@@ -94,7 +138,7 @@ const AddItemForm = ({ open, setOpen, addItemCallback }) => {
                                                     />
                                                 </div>
                                             )}
-                                            <div className="w-full grid grid-cols-1 gap-3">
+                                            <div className="w-full grid grid-cols-1 gap-3 pb-10">
                                                 {inputFields.map(
                                                     (
                                                         {
@@ -147,23 +191,24 @@ const AddItemForm = ({ open, setOpen, addItemCallback }) => {
                                                 )}
                                                 <Button
                                                     variant="primary"
-                                                    onClick={() => {
-                                                        if (
-                                                            typeof addItemCallback ===
-                                                            'function'
-                                                        ) {
-                                                            addItemCallback(
-                                                                stateValue
-                                                            );
-                                                        }
-                                                        setStateValue(
-                                                            defaultValues
-                                                        );
-                                                    }}
+                                                    onClick={handleAddNewItem}
                                                 >
-                                                    Add Item
+                                                    {!processing
+                                                        ? 'Add Item'
+                                                        : loadingIndicator}
                                                 </Button>
                                             </div>
+                                            <ToastContainer
+                                                position="bottom-right"
+                                                autoClose={3000}
+                                                hideProgressBar={false}
+                                                newestOnTop={false}
+                                                closeOnClick
+                                                rtl={false}
+                                                pauseOnFocusLoss
+                                                draggable
+                                                pauseOnHover
+                                            />
                                         </div>
                                         {/* /End replace */}
                                     </div>
