@@ -52,7 +52,8 @@ const AddItemForm = ({ open, setOpen, addItemCallback }) => {
         if (typeof addItemCallback === 'function') {
             await addItemCallback(stateValue);
         }
-        setOpen(false);
+
+        setProcessing(false);
         setStateValue(defaultValues);
     };
 
