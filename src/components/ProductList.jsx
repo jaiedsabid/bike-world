@@ -27,6 +27,7 @@ const ProductList = ({
     addNewItemBtn,
     enableDeleteBtn = false,
     byUser = false,
+    displayLatest = false,
     className,
     ...props
 }) => {
@@ -131,6 +132,13 @@ const ProductList = ({
         });
     };
 
+    const handleSortItems = (a, b) => {
+        if (displayLatest) {
+            return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+        }
+        return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+    };
+
     if (isLoading) {
         return <Spinner />;
     }
@@ -164,6 +172,7 @@ const ProductList = ({
                 {products?.length > 0 ? (
                     <div className="mt-8 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
                         {products
+                            .sort(handleSortItems)
                             .slice(0, limit ? limit : products.length)
                             .map((product) => (
                                 <ProductCard

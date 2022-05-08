@@ -60,8 +60,9 @@ const Home = () => {
             {/* Product Listing */}
             <ProductList
                 id="products"
-                title="Available Products"
+                title="Latest Bikes"
                 limit={6}
+                displayLatest
                 manageInventoryBtn
             />
             {/* Contacts section */}
